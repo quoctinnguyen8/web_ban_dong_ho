@@ -1,0 +1,69 @@
+@model WebBanDongHo.Web.ViewModels.WatchFormViewModel
+
+<div asp-validation-summary="ModelOnly" class="text-danger col-12"></div>
+
+<div class="col-12 col-md-6">
+    <label asp-for="Brand" class="form-label"></label>
+    <input asp-for="Brand" class="form-control" />
+    <span asp-validation-for="Brand" class="text-danger"></span>
+</div>
+
+<div class="col-12 col-md-6">
+    <label asp-for="Sku" class="form-label"></label>
+    <input asp-for="Sku" class="form-control" />
+    <span asp-validation-for="Sku" class="text-danger"></span>
+</div>
+
+<div class="col-12">
+    <label asp-for="Name" class="form-label"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+
+<div class="col-12">
+    <label asp-for="ShortDescription" class="form-label"></label>
+    <input asp-for="ShortDescription" class="form-control" />
+    <span asp-validation-for="ShortDescription" class="text-danger"></span>
+</div>
+
+<div class="col-12">
+    <label asp-for="LongDescription" class="form-label"></label>
+    <textarea asp-for="LongDescription" class="form-control" rows="4"></textarea>
+    <span asp-validation-for="LongDescription" class="text-danger"></span>
+</div>
+
+<div class="col-12 col-md-4">
+    <label asp-for="MovementType" class="form-label"></label>
+    <input asp-for="MovementType" class="form-control" />
+    <span asp-validation-for="MovementType" class="text-danger"></span>
+</div>
+
+<div class="col-12 col-md-4">
+    <label asp-for="CaseSizeMm" class="form-label"></label>
+    <input asp-for="CaseSizeMm" class="form-control" />
+    <span asp-validation-for="CaseSizeMm" class="text-danger"></span>
+</div>
+
+<div class="col-12 col-md-4">
+    <label asp-for="WaterResistanceM" class="form-label"></label>
+    <input asp-for="WaterResistanceM" class="form-control" />
+    <span asp-validation-for="WaterResistanceM" class="text-danger"></span>
+</div>
+
+<div class="col-12 col-md-6">
+    <label asp-for="Price" class="form-label"></label>
+    <input asp-for="Price" class="form-control" />
+    <span asp-validation-for="Price" class="text-danger"></span>
+</div>
+
+<div class="col-12 col-md-6">
+    <label asp-for="Stock" class="form-label"></label>
+    <input asp-for="Stock" class="form-control" />
+    <span asp-validation-for="Stock" class="text-danger"></span>
+</div>
+
+<div class="col-12">
+    <label asp-for="ImageUrl" class="form-label"></label>
+    <input asp-for="ImageUrl" class="form-control" />
+    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+</div>

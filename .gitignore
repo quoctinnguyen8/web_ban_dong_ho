@@ -1,0 +1,53 @@
+# Build results
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+
+# Visual Studio cache/options
+.vs/
+.vscode/
+*.user
+*.suo
+*.sln.docstates
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# Entity Framework
+*.db
+*.db-shm
+*.db-wal
+
+# Application settings
+# appsettings.Development.json
+# appsettings.local.json
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# Test results
+# TestResults/
+
+# Published files
+publish/
+PublishProfiles/
+
+# Node modules (nếu có Frontend)
+node_modules/
+dist/
+build/

@@ -1,0 +1,88 @@
+@model WebBanDongHo.Web.ViewModels.AdminOrderDetailViewModel
+
+@{
+    ViewData["Title"] = $"Chi tiết {Model.Order.OrderCode}";
+    var statuses = (IReadOnlyList<string>)ViewData["Statuses"]!;
+}
+
+<div class="d-flex justify-content-between align-items-start mb-3">
+    <div>
+        <h1 class="h3 mb-1">Đơn hàng @Model.Order.OrderCode</h1>
+        <p class="text-muted mb-0">Tạo lúc @Model.Order.CreatedDate.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a>
+</div>
+
+@if (TempData["Success"] is string success)
+{
+    <div class="alert alert-success">@success</div>
+}
+@if (TempData["Error"] is string error)
+{
+    <div class="alert alert-danger">@error</div>
+}
+
+<div class="row g-3 mb-3">
+    <div class="col-12 col-lg-7">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h6 text-uppercase text-muted">Thông tin khách hàng</h2>
+                <div class="mb-2"><strong>Họ tên:</strong> @Model.Order.CustomerName</div>
+                <div class="mb-2"><strong>Số điện thoại:</strong> @Model.Order.CustomerPhone</div>
+                <div class="mb-2"><strong>Địa chỉ:</strong> @Model.Order.CustomerAddress</div>
+                <div class="mb-0"><strong>Ghi chú:</strong> @(string.IsNullOrWhiteSpace(Model.Order.Note) ? "Không có" : Model.Order.Note)</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-5">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h6 text-uppercase text-muted">Trạng thái đơn hàng</h2>
+                <form asp-action="UpdateStatus" method="post" class="d-flex gap-2">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.Order.Id" />
+                    <select class="form-select" name="status">
+                        @foreach (var item in statuses)
+                        {
+                            <option value="@item" selected="@(Model.Order.Status == item)">@item</option>
+                        }
+                    </select>
+                    <button type="submit" class="btn btn-dark">Cập nhật</button>
+                </form>
+                <hr />
+                <div class="d-flex justify-content-between">
+                    <span class="text-muted">Tổng thanh toán</span>
+                    <strong>@Model.Order.TotalAmount.ToString("N0") đ</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>SKU</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.WatchName</td>
+                    <td>@item.WatchSku</td>
+                    <td>@item.UnitPrice.ToString("N0") đ</td>
+                    <td>@item.Quantity</td>
+                    <td class="fw-semibold">@item.LineTotal.ToString("N0") đ</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

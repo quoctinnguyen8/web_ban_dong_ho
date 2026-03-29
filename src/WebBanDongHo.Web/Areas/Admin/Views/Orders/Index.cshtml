@@ -1,0 +1,87 @@
+@model IReadOnlyList<WebBanDongHo.Web.Models.AppOrder>
+
+@{
+    ViewData["Title"] = "Quản lý đơn hàng";
+    var statuses = (IReadOnlyList<string>)ViewData["Statuses"]!;
+}
+
+<div class="admin-page-header mb-3">
+    <div>
+        <h1 class="h3 mb-1">Quản lý đơn hàng</h1>
+        <p class="text-muted mb-0">Theo dõi đơn mới, cập nhật trạng thái giao hàng và chăm sóc khách.</p>
+    </div>
+</div>
+
+@if (TempData["Success"] is string success)
+{
+    <div class="alert alert-success">@success</div>
+}
+@if (TempData["Error"] is string error)
+{
+    <div class="alert alert-danger">@error</div>
+}
+
+<form method="get" class="card border-0 shadow-sm mb-3">
+    <div class="card-body row g-2 align-items-end">
+        <div class="col-12 col-md-5">
+            <label class="form-label">Từ khóa</label>
+            <input type="text" class="form-control" name="keyword" value="@ViewData["Keyword"]" placeholder="Mã đơn, tên khách, số điện thoại" />
+        </div>
+        <div class="col-12 col-md-4">
+            <label class="form-label">Trạng thái</label>
+            <select class="form-select" name="status">
+                <option value="">Tất cả trạng thái</option>
+                @foreach (var item in statuses)
+                {
+                    <option value="@item" selected="@(ViewData["Status"]?.ToString() == item)">@item</option>
+                }
+            </select>
+        </div>
+        <div class="col-12 col-md-3">
+            <button type="submit" class="btn btn-dark w-100">Lọc đơn hàng</button>
+        </div>
+    </div>
+</form>
+
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Mã đơn</th>
+                    <th>Khách hàng</th>
+                    <th>SĐT</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th>Ngày tạo</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-4">Chưa có đơn hàng.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@order.OrderCode</td>
+                        <td>@order.CustomerName</td>
+                        <td>@order.CustomerPhone</td>
+                        <td>@order.TotalAmount.ToString("N0") đ</td>
+                        <td><span class="badge rounded-pill text-bg-secondary">@order.Status</span></td>
+                        <td>@order.CreatedDate.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-outline-dark">Chi tiết</a>
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

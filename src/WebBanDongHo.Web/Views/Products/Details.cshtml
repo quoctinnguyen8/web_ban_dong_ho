@@ -1,0 +1,55 @@
+@model WebBanDongHo.Web.Models.AppWatch
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="row g-4">
+    <div class="col-12 col-lg-6">
+        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded-3 shadow-sm w-100" style="max-height:500px;object-fit:cover;" />
+        }
+        else
+        {
+            <div class="bg-light rounded-3 d-flex align-items-center justify-content-center" style="height:320px;">
+                <span class="text-muted">Chưa có hình ảnh</span>
+            </div>
+        }
+    </div>
+    <div class="col-12 col-lg-6">
+        <p class="text-uppercase text-muted mb-2">@Model.Brand • @Model.Sku</p>
+        <h1 class="display-6 fw-bold mb-3">@Model.Name</h1>
+        <p class="text-muted">@Model.ShortDescription</p>
+
+        <div class="d-flex gap-4 my-4">
+            <div>
+                <p class="small text-muted mb-1">Loại máy</p>
+                <p class="mb-0 fw-semibold">@Model.MovementType</p>
+            </div>
+            <div>
+                <p class="small text-muted mb-1">Kích thước</p>
+                <p class="mb-0 fw-semibold">@Model.CaseSizeMm mm</p>
+            </div>
+            <div>
+                <p class="small text-muted mb-1">Chống nước</p>
+                <p class="mb-0 fw-semibold">@Model.WaterResistanceM m</p>
+            </div>
+        </div>
+
+        <p class="h3 mb-3">@Model.Price.ToString("N0") đ</p>
+        <p class="text-muted">Tồn kho: <strong>@Model.Stock</strong> chiếc</p>
+
+        <form asp-controller="Cart" asp-action="Add" method="post" class="d-flex gap-2 align-items-center">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="watchId" value="@Model.Id" />
+            <input type="number" name="quantity" value="1" min="1" max="@Model.Stock" class="form-control" style="max-width:110px;" />
+            <button type="submit" class="btn btn-dark">Thêm vào giỏ hàng</button>
+        </form>
+    </div>
+</div>
+
+<section class="mt-4">
+    <h2 class="h4">Mô tả chi tiết</h2>
+    <p class="text-muted mb-0">@(string.IsNullOrWhiteSpace(Model.LongDescription) ? "Đang cập nhật mô tả chi tiết cho sản phẩm này." : Model.LongDescription)</p>
+</section>

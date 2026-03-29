@@ -1,0 +1,113 @@
+@model WebBanDongHo.Web.ViewModels.CartPageViewModel
+
+@{
+    ViewData["Title"] = "Giỏ hàng";
+}
+
+<h1 class="h3 mb-4">Giỏ hàng của bạn</h1>
+
+@if (!string.IsNullOrWhiteSpace(Model.CreatedOrderCode))
+{
+    <div class="alert alert-success">
+        Đơn hàng <strong>@Model.CreatedOrderCode</strong> đã được tạo thành công.
+    </div>
+}
+
+@if (!Model.Items.Any())
+{
+    <div class="alert alert-info">Giỏ hàng đang trống. Hãy chọn sản phẩm yêu thích của bạn.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Đơn giá</th>
+                    <th style="width:180px;">Số lượng</th>
+                    <th>Thành tiền</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>
+                        <div class="fw-semibold">@item.Name</div>
+                        <small class="text-muted">@item.Sku</small>
+                    </td>
+                    <td>@item.UnitPrice.ToString("N0") đ</td>
+                    <td>
+                        <form asp-action="Update" method="post" class="d-flex gap-2">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="watchId" value="@item.WatchId" />
+                            <input type="number" name="quantity" value="@item.Quantity" min="0" max="@item.AvailableStock" class="form-control form-control-sm" />
+                            <button type="submit" class="btn btn-outline-secondary btn-sm">Cập nhật</button>
+                        </form>
+                    </td>
+                    <td class="fw-semibold">@item.LineTotal.ToString("N0") đ</td>
+                    <td>
+                        <form asp-action="Remove" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="watchId" value="@item.WatchId" />
+                            <button type="submit" class="btn btn-link text-danger p-0">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end fw-semibold">Tạm tính</td>
+                    <td class="fw-bold">@Model.Subtotal.ToString("N0") đ</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="card border-0 shadow-sm mt-4">
+        <div class="card-body">
+            <h2 class="h5 mb-3">Thông tin nhận hàng</h2>
+            <form asp-action="Checkout" method="post" class="row g-3">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger col-12"></div>
+
+                <div class="col-12 col-md-6">
+                    <label asp-for="Checkout.CustomerName" class="form-label"></label>
+                    <input asp-for="Checkout.CustomerName" class="form-control" />
+                    <span asp-validation-for="Checkout.CustomerName" class="text-danger"></span>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label asp-for="Checkout.CustomerPhone" class="form-label"></label>
+                    <input asp-for="Checkout.CustomerPhone" class="form-control" />
+                    <span asp-validation-for="Checkout.CustomerPhone" class="text-danger"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Checkout.CustomerAddress" class="form-label"></label>
+                    <input asp-for="Checkout.CustomerAddress" class="form-control" />
+                    <span asp-validation-for="Checkout.CustomerAddress" class="text-danger"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Checkout.Note" class="form-label"></label>
+                    <textarea asp-for="Checkout.Note" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Checkout.Note" class="text-danger"></span>
+                </div>
+
+                <div class="col-12 d-flex justify-content-between align-items-center">
+                    <span class="fw-semibold">Tổng thanh toán: @Model.Subtotal.ToString("N0") đ</span>
+                    <button type="submit" class="btn btn-dark">Đặt hàng ngay</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

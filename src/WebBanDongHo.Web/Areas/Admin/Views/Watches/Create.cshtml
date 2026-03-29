@@ -1,0 +1,23 @@
+@model WebBanDongHo.Web.ViewModels.WatchFormViewModel
+
+@{
+    ViewData["Title"] = "Thêm sản phẩm";
+}
+
+<h1 class="h3 mb-3">Thêm sản phẩm</h1>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form asp-action="Create" method="post" class="row g-3">
+            <partial name="_WatchFormFields" model="Model" />
+            <div class="col-12 d-flex gap-2">
+                <button type="submit" class="btn btn-dark">Lưu</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
